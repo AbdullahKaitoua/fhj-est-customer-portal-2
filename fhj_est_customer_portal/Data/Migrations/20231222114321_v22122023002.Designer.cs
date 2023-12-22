@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fhj_est_customer_portal.Data;
 
@@ -11,9 +12,11 @@ using fhj_est_customer_portal.Data;
 namespace fhj_est_customer_portal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231222114321_v22122023002")]
+    partial class v22122023002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -333,37 +336,6 @@ namespace fhj_est_customer_portal.Migrations
                     b.ToTable("ChargingStations");
                 });
 
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.Location", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.UserLocation", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LocationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "LocationId");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("UserLocations");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -431,35 +403,6 @@ namespace fhj_est_customer_portal.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.UserLocation", b =>
-                {
-                    b.HasOne("fhj_est_customer_portal.Entities.Location", "Location")
-                        .WithMany("UserLocations")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fhj_est_customer_portal.Data.ApplicationUser", "User")
-                        .WithMany("UserLocations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("UserLocations");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.Location", b =>
-                {
-                    b.Navigation("UserLocations");
                 });
 #pragma warning restore 612, 618
         }

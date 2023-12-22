@@ -1,3 +1,4 @@
+using fhj_est_customer_portal.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,6 +9,7 @@ namespace fhj_est_customer_portal.Data
     {
         [Required ,MaxLength(25)]
         public string? Name { get; set; }
+        public virtual ICollection<UserLocation> UserLocations { get; set; }
     }
 
 }
