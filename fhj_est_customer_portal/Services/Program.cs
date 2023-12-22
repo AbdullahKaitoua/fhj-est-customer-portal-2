@@ -2,9 +2,11 @@ using fhj_est_customer_portal.Client.Pages;
 using fhj_est_customer_portal.Components;
 using fhj_est_customer_portal.Components.Account;
 using fhj_est_customer_portal.Data;
+using fhj_est_customer_portal.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddScoped<ChargingStationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

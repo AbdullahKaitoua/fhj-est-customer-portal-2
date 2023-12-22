@@ -23,7 +23,10 @@ namespace fhj_est_customer_portal.Entities
         public string? FirmwareVersion { get; set; }
         [StringLength(255)]
         public string OperatorName { get; set; } = null!;
+        [Column(TypeName = "decimal(9,6)")]
         public decimal? Lat { get; set; }
+
+        [Column(TypeName = "decimal(9,6)")]
         public decimal? Long { get; set; }
         [StringLength(255)]
         public string? Country { get; set; }
@@ -44,8 +47,8 @@ namespace fhj_est_customer_portal.Entities
         [StringLength(255)]
         [Unicode(false)]
         public string Uuid { get; set; } = null!;
-        public required string UserId { get; set; }
-        public virtual required ApplicationUser User { get; set; }    
-  
+        public string? UserId { get; set; }
+        public virtual ApplicationUser? User { get; set; }
+
     }
 }

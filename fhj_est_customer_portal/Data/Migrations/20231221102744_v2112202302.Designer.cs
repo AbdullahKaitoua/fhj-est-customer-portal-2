@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fhj_est_customer_portal.Data;
 
@@ -11,9 +12,11 @@ using fhj_est_customer_portal.Data;
 namespace fhj_est_customer_portal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231221102744_v2112202302")]
+    partial class v2112202302
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,10 +292,10 @@ namespace fhj_est_customer_portal.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal?>("Lat")
-                        .HasColumnType("decimal(9,6)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("Long")
-                        .HasColumnType("decimal(9,6)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Manufacturer")
                         .HasMaxLength(255)
@@ -330,7 +333,7 @@ namespace fhj_est_customer_portal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChargingStations");
+                    b.ToTable("ChargingStation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,5 +1,71 @@
-﻿<h3>ChargingStations</h3>
+﻿@page "/chargingstations"
+@using fhj_est_customer_portal.Services
+@inject ChargingStationService ChargingStationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using System.Security.Claims
+@using fhj_est_customer_portal.Entities
+
+<h3>Charging Stations</h3>
+
+@if (chargingStations == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (chargingStations.Count == 0)
+    {
+        <p>You have no charging stations.</p>
+    }
+    else
+    {
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Energy Provider</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Zip</th>
+                    <th>Street</th>
+                    <th>Operator Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var chargingStation in chargingStations)
+                {
+                    <tr>
+                        <td>@chargingStation.Name</td>
+                        <td>@chargingStation.EnergyProvider</td>
+                        <td>@chargingStation.Country</td>
+                        <td>@chargingStation.City</td>
+                        <td>@chargingStation.Zip</td>
+                        <td>@chargingStation.Street</td>
+                        <td>@chargingStation.OperatorName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+          
+    }
+    
+}
 
 @code {
+    private string? UserId;
+    private List<ChargingStation>? chargingStations;
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            chargingStations = await ChargingStationService.GetChargingStationsByUserId(UserId);
+
+        }
+    }
 }
