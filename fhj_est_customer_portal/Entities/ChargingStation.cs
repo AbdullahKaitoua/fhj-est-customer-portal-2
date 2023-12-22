@@ -3,6 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using fhj_est_customer_portal.Data;
 
+
+// create anothor entity like this named location and add it to the context
+// and then add a migration and update the database
+// then add a controller for the location entity
+// then add a view for the location entity
+// then add a link to the location view in the navigation bar
+// then add a link to the location view in the home page
+// then add a link to the location view in the index view
+// then add a link to the location view in the layout view
+// then add a link to the location view in the about view
+    
 namespace fhj_est_customer_portal.Entities
 {
     public class ChargingStation

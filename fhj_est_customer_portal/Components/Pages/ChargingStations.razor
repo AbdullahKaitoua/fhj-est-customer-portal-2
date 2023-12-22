@@ -52,9 +52,46 @@ else
     
 }
 
+<h3>Locations</h3>
+
+@if (locations == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (locations.Count == 0)
+    {
+        <p>You have no locations.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Location ID</th>
+                    <th>Location Name</th>
+                    <th>User ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var location in locations)
+                {
+                    <tr>
+                        <td>@location.Id</td>
+                        <td>@location.Name</td>
+                        <td>@UserId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
 @code {
     private string? UserId;
     private List<ChargingStation>? chargingStations;
+    private List<Location>? locations;
 
 
     protected override async Task OnInitializedAsync()
@@ -65,6 +102,7 @@ else
         {
             UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             chargingStations = await ChargingStationService.GetChargingStationsByUserId(UserId);
+            locations= await ChargingStationService.GetLocationsByUserId(UserId);
 
         }
     }
