@@ -13,9 +13,22 @@ namespace fhj_est_customer_portal.Services
             _context = context;
         }
 
-        public async Task<List<ChargingStation>> GetChargingStationsByUserId(string userId)
+        /*public async Task<List<ChargingStation>> GetChargingStationsByUserId(string userId)
         {
             return await _context.ChargingStations.Where(cs => cs.UserId == userId).ToListAsync();
+        }*/
+
+        public async Task<List<ChargingStation>> GetChargingStationsByUserId(string userId)
+        {
+            var locations = await _context.UserLocations
+                .Where(ul => ul.UserId == userId)
+                .Select(ul => ul.LocationId)
+                .ToListAsync();
+
+            return await _context.ChargingStations
+                .Where(cs => locations.Contains(cs.LocationId))
+                .Include(cs => cs.Location)
+                .ToListAsync();
         }
         public async Task<List<Location>> GetLocationsByUserId(string userId)
         {

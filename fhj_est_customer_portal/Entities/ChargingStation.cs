@@ -58,8 +58,10 @@ namespace fhj_est_customer_portal.Entities
         [StringLength(255)]
         [Unicode(false)]
         public string Uuid { get; set; } = null!;
-        public string? UserId { get; set; }
-        public virtual ApplicationUser? User { get; set; }
+
+        public string LocationId { get; set; }
+
+        public  Location Location { get; set; }
 
     }
 }

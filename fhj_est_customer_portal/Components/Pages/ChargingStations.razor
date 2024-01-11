@@ -1,9 +1,11 @@
 ﻿@page "/chargingstations"
+@using Microsoft.AspNetCore.Authorization
 @using fhj_est_customer_portal.Services
 @inject ChargingStationService ChargingStationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using System.Security.Claims
 @using fhj_est_customer_portal.Entities
+@attribute [Authorize]
 
 <h3>Charging Stations</h3>
 
@@ -22,6 +24,7 @@ else
         <table class='table'>
             <thead>
                 <tr>
+                    <th>Location Name</th>
                     <th>Name</th>
                     <th>Energy Provider</th>
                     <th>Country</th>
@@ -35,6 +38,7 @@ else
                 @foreach (var chargingStation in chargingStations)
                 {
                     <tr>
+                        <td>@chargingStation.Location.Name</td>
                         <td>@chargingStation.Name</td>
                         <td>@chargingStation.EnergyProvider</td>
                         <td>@chargingStation.Country</td>
@@ -50,42 +54,6 @@ else
           
     }
     
-}
-
-<h3>Locations</h3>
-
-@if (locations == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    if (locations.Count == 0)
-    {
-        <p>You have no locations.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Location ID</th>
-                    <th>Location Name</th>
-                    <th>User ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var location in locations)
-                {
-                    <tr>
-                        <td>@location.Id</td>
-                        <td>@location.Name</td>
-                        <td>@UserId</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
 }
 
 @code {
