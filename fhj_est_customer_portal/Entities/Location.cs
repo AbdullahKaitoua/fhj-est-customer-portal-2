@@ -19,9 +19,7 @@ namespace fhj_est_customer_portal.Entities
 
           
             public virtual ICollection<UserLocation> UserLocations { get; set; }
-
-            // One to many relationship with ChargingStation
-            //public virtual ICollection<ChargingStation> ChargingStations { get; set; }
+            public virtual ICollection<ChargingStation> ChargingStations { get; set; }
         }
     }
 
