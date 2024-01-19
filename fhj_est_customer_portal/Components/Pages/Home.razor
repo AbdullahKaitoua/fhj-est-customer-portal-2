@@ -11,10 +11,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>Hello @context.User.GetFullName</h1>
-        <p>User ID: @userId</p>
-        <p>Email: @userEmail</p>
-        <p>Role: @userRole</p>
+        <h1>Hello @context.User.GetFullName()</h1>
         <h2>Your Books:</h2>
 
         @if(userBooks == null)

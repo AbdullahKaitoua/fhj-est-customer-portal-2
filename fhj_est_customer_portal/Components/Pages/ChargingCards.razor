@@ -1,0 +1,66 @@
+﻿@page "/chargingcards"
+@inject ChargingCardService ChargingCardService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using System.Security.Claims
+@using fhj_est_customer_portal.Entities
+@using Microsoft.AspNetCore.Authorization
+@using fhj_est_customer_portal.Services
+@attribute [Authorize]
+<h3>Charging Cards</h3>
+
+@if (chargingCards == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (chargingCards.Count == 0)
+{
+    <p>No charging cards available.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Number</th>
+                <th>Label</th>
+                <th>Active</th>
+                <th>Valid From</th>
+                <th>Valid To</th>
+                <th>Billing Valid From</th>
+                <th>Billing Valid To</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var chargingCard in chargingCards)
+            {
+                <tr>
+                    <td>@chargingCard.Number</td>
+                    <td>@chargingCard.Label</td>
+                    <td>@(chargingCard.Active ? "Yes" : "No")</td>
+                    <td>@chargingCard.ValidFrom</td>
+                    <td>@chargingCard.ValidTo</td>
+                    <td>@chargingCard.BillingValidFrom</td>
+                    <td>@chargingCard.BillingValidTo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private string? UserId;
+    private List<ChargingCard>? chargingCards;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            chargingCards = await ChargingCardService.GetChargingCardsByUserId(UserId);
+        }
+    }
+}
