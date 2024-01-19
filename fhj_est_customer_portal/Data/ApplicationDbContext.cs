@@ -10,6 +10,7 @@ namespace fhj_est_customer_portal.Data
         public DbSet<Location> Locations { get; set; } = null!;
         public DbSet<UserLocation> UserLocations { get; set; } = null!;
         public DbSet<ChargingStation> ChargingStations { get; set; } = null!;  
+        public DbSet<ChargingPoint> ChargingPoints { get; set; } = null!;
         public DbSet<Books> Books { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
