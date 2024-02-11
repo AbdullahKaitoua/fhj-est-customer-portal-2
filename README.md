@@ -30,7 +30,7 @@ This guide will help you set up the EV charging station customer portal on your 
 
    ```bash
    dotnet restore
-4. **Build **: Use the .NET CLI to build and test the project:
+4. **Build**: Use the .NET CLI to build and test the project:
 
    ```bash
    dotnet build
@@ -51,7 +51,7 @@ you need to ask the developer for the database to be able to run the application
 
 Here is an example of the dashboard page of the application after you run it.
 
-![Dashboard Screenshot](Home.png)
+![Dashboard Screenshot](home.png)
 
 after you register and login you can view your charging stations and charging points.
 
