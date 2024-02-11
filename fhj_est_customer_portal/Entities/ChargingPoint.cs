@@ -22,7 +22,7 @@ namespace fhj_est_customer_portal.Entities
         [Unicode(false)]
         public string ChargingStationId { get; set; }
         public ChargingStation ChargingStation { get; set; }
-
+        public virtual ICollection<ChargingProcess> ChargingProcesses { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("uuid")]

@@ -13,7 +13,7 @@ namespace fhj_est_customer_portal.Data
         public DbSet<ChargingPoint> ChargingPoints { get; set; } = null!;
         public DbSet<ChargingCard> ChargingCards { get; set; } = null!;
         public DbSet<LocationChargingCard> LocationChargingCards { get; set; } = null!;
-        public DbSet<Books> Books { get; set; } = null!;
+        public DbSet<ChargingProcess> ChargingProcesses { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

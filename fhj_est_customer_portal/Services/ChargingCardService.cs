@@ -1,6 +1,5 @@
 ﻿using fhj_est_customer_portal.Data;
 using fhj_est_customer_portal.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace fhj_est_customer_portal.Services

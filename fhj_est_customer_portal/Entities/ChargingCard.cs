@@ -23,5 +23,7 @@ namespace fhj_est_customer_portal.Entities
         public DateTime? BillingValidFrom { get; set; }
         public DateTime? BillingValidTo { get; set; }
         public virtual ICollection<LocationChargingCard> LocationChargingCards { get; set; }
+        public virtual ICollection<ChargingProcess> ChargingProcesses { get; set; }
+
     }
 }
