@@ -52,6 +52,7 @@ namespace fhj_est_customer_portal.Entities
         [StringLength(255)]
         [Unicode(false)]
         public string EnergyProvider { get; set; } = null!;
+        public virtual ICollection<ChargingPoint> ChargingPoints { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("uuid")]

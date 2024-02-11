@@ -30,12 +30,13 @@ namespace fhj_est_customer_portal.Services
                 .Include(cs => cs.Location)
                 .ToListAsync();
         }
-        public async Task<List<Location>> GetLocationsByUserId(string userId)
+
+        public async Task<ChargingStation> GetChargingStationById(string id)
         {
-            return await _context.UserLocations
-                .Where(ul => ul.UserId == userId)
-                .Select(ul => ul.Location)
-                .ToListAsync();
+            return await _context.ChargingStations
+                .Include(cs => cs.Location)
+                .Include(cs => cs.ChargingPoints)
+                .FirstOrDefaultAsync(cs => cs.Uuid == id);
         }
     }
 }

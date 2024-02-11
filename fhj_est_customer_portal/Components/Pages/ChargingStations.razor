@@ -2,12 +2,14 @@
 @using Microsoft.AspNetCore.Authorization
 @using fhj_est_customer_portal.Services
 @inject ChargingStationService ChargingStationService
+@inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using System.Security.Claims
 @using fhj_est_customer_portal.Entities
 @attribute [Authorize]
 
 <h3>Charging Stations</h3>
+
 
 @if (chargingStations == null)
 {
@@ -21,17 +23,13 @@ else
     }
     else
     {
-        <table class='table'>
+        <table class='table table-hover'>
             <thead>
                 <tr>
                     <th>Location Name</th>
-                    <th>Name</th>
-                    <th>Energy Provider</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Zip</th>
-                    <th>Street</th>
-                    <th>Operator Name</th>
+                    <th>Charging Station</th>
+<th></th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -40,27 +38,20 @@ else
                     <tr>
                         <td>@chargingStation.Location.Name</td>
                         <td>@chargingStation.Name</td>
-                        <td>@chargingStation.EnergyProvider</td>
-                        <td>@chargingStation.Country</td>
-                        <td>@chargingStation.City</td>
-                        <td>@chargingStation.Zip</td>
-                        <td>@chargingStation.Street</td>
-                        <td>@chargingStation.OperatorName</td>
+                        <td>
+                            <a href="/chargingstationdetails/@chargingStation.Uuid">View Details</a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-          
     }
-    
 }
 
 @code {
     private string? UserId;
     private List<ChargingStation>? chargingStations;
-    private List<Location>? locations;
-
+  
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,8 +61,8 @@ else
         {
             UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             chargingStations = await ChargingStationService.GetChargingStationsByUserId(UserId);
-            locations= await ChargingStationService.GetLocationsByUserId(UserId);
-
         }
     }
+
+   
 }

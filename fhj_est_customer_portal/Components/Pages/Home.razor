@@ -11,30 +11,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>Hello @context.User.GetFullName</h1>
-        <p>User ID: @userId</p>
-        <p>Email: @userEmail</p>
-        <p>Role: @userRole</p>
-        <h2>Your Books:</h2>
-
-        @if(userBooks == null)
-        {
-            <p>Loading...</p>
-        }
-        else 
-        {
-            if (userBooks.Count == 0)
-            {
-                <p>You have no books.</p>
-            }
-            else
-            {
-                foreach (var book in userBooks)
-                {
-                    <p>@book.Title</p>
-                }
-            }
-        }
+        <h1>Hello @context.User.GetFullName()</h1>
+        
     </Authorized>
     <NotAuthorized>
         <p>You are not authorized</p>
@@ -45,7 +23,6 @@
     private string userId;
     private string userEmail;
     private string userRole;
-    private List<Books> userBooks;
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,8 +35,6 @@
             userEmail = user.FindFirst(ClaimTypes.Email)?.Value;
             userRole = user.FindFirst(ClaimTypes.Role)?.Value;
 
-           
-            userBooks = await DbContext.Books.Where(b => b.UserId == userId).ToListAsync();
-        }
+         }
     }
 }

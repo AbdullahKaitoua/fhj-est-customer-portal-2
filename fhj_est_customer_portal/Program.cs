@@ -1,4 +1,3 @@
-using fhj_est_customer_portal.Client.Pages;
 using fhj_est_customer_portal.Components;
 using fhj_est_customer_portal.Components.Account;
 using fhj_est_customer_portal.Data;
@@ -40,6 +39,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 builder.Services.AddScoped<ChargingStationService>();
+builder.Services.AddScoped<ChargingCardService>();
+builder.Services.AddScoped<ChargingProcessService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +64,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Counter).Assembly);
+    .AddAdditionalAssemblies();
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();

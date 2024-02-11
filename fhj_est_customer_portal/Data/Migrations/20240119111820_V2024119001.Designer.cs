@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fhj_est_customer_portal.Data;
 
@@ -11,9 +12,11 @@ using fhj_est_customer_portal.Data;
 namespace fhj_est_customer_portal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240119111820_V2024119001")]
+    partial class V2024119001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,6 +228,27 @@ namespace fhj_est_customer_portal.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("fhj_est_customer_portal.Entities.Books", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Books");
+                });
+
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingCard", b =>
                 {
                     b.Property<string>("CardId")
@@ -320,71 +344,6 @@ namespace fhj_est_customer_portal.Migrations
                     b.HasIndex("ChargingStationId");
 
                     b.ToTable("ChargingPoints");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingProcess", b =>
-                {
-                    b.Property<string>("Uuid")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("uuid");
-
-                    b.Property<DateTime>("ChangeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ChargingCardId")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ChargingPointId")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Costs")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Deleted")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EndDatetime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Finished")
-                        .HasColumnType("bit");
-
-                    b.Property<long?>("MeterEnd")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("MeterStart")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("MeterTotal")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StartDatetime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Uuid");
-
-                    b.HasIndex("ChargingCardId");
-
-                    b.HasIndex("ChargingPointId");
-
-                    b.ToTable("ChargingProcesses");
                 });
 
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingStation", b =>
@@ -572,6 +531,15 @@ namespace fhj_est_customer_portal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("fhj_est_customer_portal.Entities.Books", b =>
+                {
+                    b.HasOne("fhj_est_customer_portal.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingPoint", b =>
                 {
                     b.HasOne("fhj_est_customer_portal.Entities.ChargingStation", "ChargingStation")
@@ -581,21 +549,6 @@ namespace fhj_est_customer_portal.Migrations
                         .IsRequired();
 
                     b.Navigation("ChargingStation");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingProcess", b =>
-                {
-                    b.HasOne("fhj_est_customer_portal.Entities.ChargingCard", "ChargingCard")
-                        .WithMany("ChargingProcesses")
-                        .HasForeignKey("ChargingCardId");
-
-                    b.HasOne("fhj_est_customer_portal.Entities.ChargingPoint", "ChargingPoint")
-                        .WithMany("ChargingProcesses")
-                        .HasForeignKey("ChargingPointId");
-
-                    b.Navigation("ChargingCard");
-
-                    b.Navigation("ChargingPoint");
                 });
 
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingStation", b =>
@@ -654,14 +607,7 @@ namespace fhj_est_customer_portal.Migrations
 
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingCard", b =>
                 {
-                    b.Navigation("ChargingProcesses");
-
                     b.Navigation("LocationChargingCards");
-                });
-
-            modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingPoint", b =>
-                {
-                    b.Navigation("ChargingProcesses");
                 });
 
             modelBuilder.Entity("fhj_est_customer_portal.Entities.ChargingStation", b =>

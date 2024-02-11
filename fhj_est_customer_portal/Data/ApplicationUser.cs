@@ -9,7 +9,7 @@ namespace fhj_est_customer_portal.Data
     {
         [Required ,MaxLength(25)]
         public string? Name { get; set; }
-        public virtual ICollection<UserLocation> UserLocations { get; set; }
+        public virtual ICollection<UserLocation>? UserLocations { get; set; }
     }
 
 }

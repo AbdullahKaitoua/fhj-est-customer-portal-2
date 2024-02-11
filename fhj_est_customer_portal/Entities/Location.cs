@@ -16,11 +16,10 @@ namespace fhj_est_customer_portal.Entities
             [Required]
             [StringLength(255)]
             public string Name { get; set; }
-
-          
             public virtual ICollection<UserLocation> UserLocations { get; set; }
             public virtual ICollection<ChargingStation> ChargingStations { get; set; }
-        }
+        public virtual ICollection<LocationChargingCard> LocationChargingCards { get; set; }
+    }
     }
 
 

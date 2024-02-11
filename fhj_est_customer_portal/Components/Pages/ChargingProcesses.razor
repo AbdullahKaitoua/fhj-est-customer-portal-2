@@ -1,0 +1,59 @@
+﻿@page "/chargingprocesses"
+@using fhj_est_customer_portal.Services
+@using System.Security.Claims
+@using fhj_est_customer_portal.Entities
+@using Microsoft.AspNetCore.Authorization
+@inject ChargingProcessService ChargingProcessService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+<h3>Charging Processes</h3>
+
+@if (chargingProcesses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (chargingProcesses.Count == 0)
+{
+    <p>No charging processes available.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+                
+                <!-- Add more headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var chargingProcess in chargingProcesses)
+            {
+                <tr>
+                    <td>@chargingProcess.StartDatetime</td>
+                    <td>@chargingProcess.EndDatetime</td>
+                    <td>@chargingProcess.Status</td>
+                    <!-- Add more cells as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string? UserId;
+    private List<ChargingProcess>? chargingProcesses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            chargingProcesses = await ChargingProcessService.GetChargingProcessesByUserId(UserId);
+        }
+    }
+}
