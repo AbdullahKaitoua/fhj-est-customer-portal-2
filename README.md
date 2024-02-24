@@ -51,7 +51,7 @@ you need to ask the developer for the database to be able to run the application
 
 Here is an example of the dashboard page of the application after you run it.
 
-![Dashboard Screenshot](Home.png)
+![Dashboard Screenshot](home.png)
 
 after you register and login you can view your charging stations and charging points.
 
