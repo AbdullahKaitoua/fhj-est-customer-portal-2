@@ -30,6 +30,27 @@ namespace fhj_est_customer_portal.Services
                 .ToListAsync();
            return userProcesses;
         }
+        public async Task<List<ChargingProcess>> GetChargingProcessesByUserIdAndStatus(string userId, string? status)
+        {
+            var query = _context.ChargingProcesses
+                .Include(cp => cp.ChargingPoint)
+                    .ThenInclude(cp => cp.ChargingStation)
+                .Include(cp => cp.ChargingCard)
+                    .ThenInclude(cc => cc.LocationChargingCards)
+                        .ThenInclude(lcc => lcc.Location)
+                            .ThenInclude(l => l.UserLocations)
+                .Where(cp => cp.ChargingCard.LocationChargingCards
+                    .Any(lcc => lcc.Location.UserLocations
+                        .Any(ul => ul.UserId == userId)));
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(cp => cp.Status == status);
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
 
 }

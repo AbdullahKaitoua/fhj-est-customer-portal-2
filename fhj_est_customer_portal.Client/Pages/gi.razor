@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using fhj_est_customer_portal
+<p>Welcome, @fullName!</p>
+@code {
+    private string fullName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var fullNameClaim = user.FindFirst(AppConstants.ClaimNames.FullName);
+            if (fullNameClaim != null)
+            {
+                fullName = fullNameClaim.Value;
+            }
+        }
+    }
+}

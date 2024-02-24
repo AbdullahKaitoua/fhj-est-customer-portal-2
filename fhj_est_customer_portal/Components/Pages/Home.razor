@@ -9,15 +9,22 @@
 
 <PageTitle>Home</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        <h1>Hello @context.User.GetFullName()</h1>
-        
-    </Authorized>
-    <NotAuthorized>
-        <p>You are not authorized</p>
-    </NotAuthorized>
-</AuthorizeView>
+<div class="container">
+    <AuthorizeView>
+        <Authorized>
+            <div class="jumbotron mt-5">
+                <h1 class="display-4">Hello, @context.User.GetFullName()!</h1>
+                <p class="lead">Welcome back to the Customer Portal of Energienetze Steiermark.</p>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="jumbotron mt-5">
+                <h1 class="display-4">Welcome to Customer Portal of Energienetze Steiermark</h1>
+                <p class="lead">To be able to see more, please <a href="Account/Register" class="btn btn-primary">Register</a> or <a href="Account/Login" class="btn btn-secondary">Login</a></p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
 
 @code {
     private string userId;
@@ -34,7 +41,6 @@
             userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             userEmail = user.FindFirst(ClaimTypes.Email)?.Value;
             userRole = user.FindFirst(ClaimTypes.Role)?.Value;
-
-         }
+        }
     }
 }

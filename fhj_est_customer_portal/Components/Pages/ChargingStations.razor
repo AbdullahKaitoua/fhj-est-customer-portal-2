@@ -7,9 +7,18 @@
 @using System.Security.Claims
 @using fhj_est_customer_portal.Entities
 @attribute [Authorize]
+@rendermode InteractiveServer
+
 
 <h3>Charging Stations</h3>
 
+<select @onchange="OnLocationSelected">
+    <option value="">All Locations</option>
+    @foreach (var locationName in locationNames)
+    {
+        <option value="@locationName">@locationName</option>
+    }
+</select>
 
 @if (chargingStations == null)
 {
@@ -51,7 +60,8 @@ else
 @code {
     private string? UserId;
     private List<ChargingStation>? chargingStations;
-  
+    private List<string> locationNames = new();
+    private string selectedLocationName = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,9 +70,22 @@ else
         if (user.Identity.IsAuthenticated)
         {
             UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            chargingStations = await ChargingStationService.GetChargingStationsByUserId(UserId);
+            if (UserId != null)
+            {
+                locationNames = await ChargingStationService.GetLocationNamesByUserId(UserId);
+            }
+            await LoadChargingStations();
         }
     }
 
-   
+    private async Task LoadChargingStations()
+    {
+        chargingStations = await ChargingStationService.GetChargingStationsByUserIdAndLocation(UserId, selectedLocationName);
+    }
+
+    private async Task OnLocationSelected(ChangeEventArgs e)
+    {
+        selectedLocationName = e.Value?.ToString();
+        await LoadChargingStations();
+    }
 }

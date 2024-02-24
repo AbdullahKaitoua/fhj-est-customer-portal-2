@@ -11,18 +11,25 @@ namespace fhj_est_customer_portal.Services
         {
             _context = context;
         }
-        public async Task<List<ChargingCard>> GetChargingCardsByUserId(string userId)
+        public async Task<List<ChargingCard>> GetChargingCardsByUserId(string userId, bool? isActive)
         {
             var locations = await _context.UserLocations
                 .Where(ul => ul.UserId == userId)
                 .Select(ul => ul.LocationId)
                 .ToListAsync();
 
-            return await _context.LocationChargingCards
+            var query = _context.LocationChargingCards
                 .Where(lcc => locations.Contains(lcc.LocationId))
-                .Select(lcc => lcc.ChargingCard)
-                .ToListAsync();
+                .Select(lcc => lcc.ChargingCard);
+
+            if (isActive.HasValue)
+            {
+                query = query.Where(card => card.Active == isActive.Value);
+            }
+
+            return await query.ToListAsync();
         }
+
     }
 
 }

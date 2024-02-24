@@ -1,9 +1,11 @@
 ﻿@page "/chargingstationdetails/{StationId}"
 @using fhj_est_customer_portal.Services
 @inject ChargingStationService ChargingStationService
+@inject ChargingPointService ChargingPointService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using System.Security.Claims
+@rendermode InteractiveServer
 @using fhj_est_customer_portal.Entities
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
@@ -23,11 +25,20 @@ else
             <p class="card-text"><strong>Energy Provider:</strong> @chargingStation.EnergyProvider</p>
             <p class="card-text"><strong>Address:</strong> @chargingStation.Street, @chargingStation.City, @chargingStation.Zip, @chargingStation.Country</p>
             <p class="card-text"><strong>Operator:</strong> @chargingStation.OperatorName</p>
+            <p class="card-text"><strong>Manufacturer:</strong> @chargingStation.Manufacturer</p>
+            <p class="card-text"><strong>Model:</strong> @chargingStation.Model</p>
+            <p class="card-text"><strong>Serial Number:</strong> @chargingStation.SerialNbr</p>
+            <p class="card-text"><strong>Firmware Version:</strong> @chargingStation.FirmwareVersion</p>
         </div>
     </div>
 
-    <h5 class="text-secondary">Charging Points</h5>
-    @if (chargingStation.ChargingPoints.Any())
+    <button class="btn btn-primary mr-2" @onclick="() => UpdateChargingStationAndPoints(null)">All</button>
+    <button class="btn btn-success mr-2" @onclick="() => UpdateChargingStationAndPoints(true)">Available</button>
+    <button class="btn btn-danger" @onclick="() => UpdateChargingStationAndPoints(false)">Not Available</button>
+
+
+
+    @if (chargingStation?.ChargingPoints?.Any() == true)
     {
         <table class="table table-hover">
             <thead class="thead-light">
@@ -40,7 +51,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var chargingPoint in chargingStation.ChargingPoints)
+                @foreach (var chargingPoint in chargingPoints ?? new List<ChargingPoint>())
                 {
                     <tr>
                         <td>@chargingPoint.Name</td>
@@ -64,9 +75,21 @@ else
     public string StationId { get; set; }
 
     private ChargingStation? chargingStation;
+    private List<ChargingPoint>? chargingPoints;
+    private bool? showPublic;
 
     protected override async Task OnInitializedAsync()
     {
-        chargingStation = await ChargingStationService.GetChargingStationById(StationId);
+        await UpdateChargingStationAndPoints();
     }
+
+    private async Task UpdateChargingStationAndPoints(bool? isPublic = null)
+    {
+        showPublic = isPublic;
+        chargingStation = await ChargingStationService.GetChargingStationById(StationId);
+        chargingPoints = await ChargingPointService.GetChargingPointsByStationIdAndAvailability(StationId, showPublic);
+        StateHasChanged();
+    }
+
+
 }

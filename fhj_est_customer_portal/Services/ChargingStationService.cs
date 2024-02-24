@@ -13,30 +13,50 @@ namespace fhj_est_customer_portal.Services
             _context = context;
         }
 
-        /*public async Task<List<ChargingStation>> GetChargingStationsByUserId(string userId)
+        public async Task<List<ChargingStation>> GetChargingStationsByUserIdAndLocation(string userId, string locationName)
         {
-            return await _context.ChargingStations.Where(cs => cs.UserId == userId).ToListAsync();
-        }*/
-
-        public async Task<List<ChargingStation>> GetChargingStationsByUserId(string userId)
-        {
-            var locations = await _context.UserLocations
+            var userLocationIds = _context.UserLocations
                 .Where(ul => ul.UserId == userId)
-                .Select(ul => ul.LocationId)
-                .ToListAsync();
+                .Select(ul => ul.LocationId);
 
-            return await _context.ChargingStations
-                .Where(cs => locations.Contains(cs.LocationId))
-                .Include(cs => cs.Location)
-                .ToListAsync();
+            IQueryable<ChargingStation> query = _context.ChargingStations
+                .Where(cs => userLocationIds.Contains(cs.LocationId))
+                .Include(cs => cs.Location);
+
+            if (!string.IsNullOrEmpty(locationName))
+            {
+                query = query.Where(cs => cs.Location.Name == locationName);
+            }
+
+            return await query.ToListAsync();
         }
+
+
+
 
         public async Task<ChargingStation> GetChargingStationById(string id)
         {
             return await _context.ChargingStations
                 .Include(cs => cs.Location)
-                .Include(cs => cs.ChargingPoints)
                 .FirstOrDefaultAsync(cs => cs.Uuid == id);
         }
+
+
+
+        public async Task<List<string>> GetLocationNamesByUserId(string userId)
+        {
+            var locationNames = await _context.Locations
+                .Where(l => l.UserLocations.Any(ul => ul.UserId == userId))
+                .Select(l => l.Name)
+                .ToListAsync();
+
+            return locationNames;
+        }
+
+
+
+
+
+
     }
 }
